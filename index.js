@@ -1,9 +1,27 @@
 const express = require("express");
 const app = express();
+const router = require("./routes/index");
 port = 3000;
+
+let msn = [
+  {
+    nombre: "Diego",
+    msn: "Hola",
+  },
+  {
+    nombre: "Diego",
+    msn: "Hola",
+  },
+  {
+    nombre: "Diego",
+    msn: "Hola",
+  },
+];
 
 // archivos estaticos
 app.use(express.static(__dirname + "/public"));
+// router
+app.use("/api", router);
 
 // server
 const http = require("http");
@@ -14,15 +32,11 @@ const io = require("socket.io")(server);
 
 // conexion Sockect
 io.on("connection", (socket) => {
-  socket.emit("message_back", "Hola soy el back");
+  socket.emit("message_back", msn);
   console.log("Nueva conexion");
   socket.on("message_client", (data) => {
     console.log(data);
   });
-});
-
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
 });
 
 server.listen(port, () => {
