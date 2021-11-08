@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const router = require("./routes/index");
-port = 3000;
+port = process.env.PORT || 3003;
 
 let msn = [];
 
