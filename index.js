@@ -3,20 +3,7 @@ const app = express();
 const router = require("./routes/index");
 port = 3000;
 
-let msn = [
-  {
-    nombre: "Diego",
-    msn: "Hola",
-  },
-  {
-    nombre: "Diego",
-    msn: "Hola",
-  },
-  {
-    nombre: "Diego",
-    msn: "Hola",
-  },
-];
+let msn = [];
 
 // archivos estaticos
 app.use(express.static(__dirname + "/public"));
@@ -32,10 +19,17 @@ const io = require("socket.io")(server);
 
 // conexion Sockect
 io.on("connection", (socket) => {
-  socket.emit("message_back", msn);
   console.log("Nueva conexion");
   socket.on("message_client", (data) => {
     console.log(data);
+  });
+
+  // escuchar data cliente
+
+  socket.on("dataMsn", (data) => {
+    msn.push(data);
+    // socket.emit("message_back", msn);
+    io.sockets.emit("message_back", msn);
   });
 });
 
